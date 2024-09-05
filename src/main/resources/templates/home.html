@@ -1,0 +1,485 @@
+<!Doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <!--<link rel="stylesheet" href="/css/home.css"/>-->
+    <script src="https://kit.fontawesome.com/7ab6a01705.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5%;
+        }
+
+        .login button, .register button, .add-post button {
+            height: 50px;
+            width: 250px;
+            color: black;
+            background: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: 2px solid #000;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .login button:hover, .register button:hover, .add-post button:hover {
+            transform: scale(1.05);
+            background-color: #333;
+            color: #fff;
+        }
+
+        .posts-list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding: 2%;
+            gap: 2%;
+        }
+
+        .filtering {
+            background: #000;
+            border-top: 2px solid white;
+            padding: 25px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+        }
+
+        .search-box label {
+            font-size: 25px;
+            color: #fff;
+        }
+
+        .search-box input {
+            height: 40px;
+            width: 300px;
+            font-size: 20px;
+            border-radius: 10px;
+            border: 2px solid #000;
+            padding-left: 15px;
+        }
+
+        .search-box button {
+            height: 40px;
+            width: 100px;
+            font-weight: bold;
+            font-size: 20px;
+            background: white;
+            border-radius: 10px;
+            color: black;
+            border: 2px solid #000;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .filters {
+            display: flex;
+            gap: 25px;
+        }
+
+        .filters div button {
+            height: 40px;
+            width: 100px;
+            font-weight: bold;
+            font-size: 20px;
+            background: white;
+            border-radius: 10px;
+            color: black;
+            border: 2px solid #000;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .filtering button:hover {
+            transform: scale(1.05);
+            background-color: #333;
+        }
+
+        #authorFilter, #tagFilter, #sort {
+            height: 40px;
+            width: 300px;
+            font-size: 20px;
+            border-radius: 10px;
+            border: 2px solid #000;
+            color: #000;
+        }
+
+        .particular-post {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+            height: 300px;
+            border-radius: 10px;
+            padding: 16px;
+            gap: 10px;
+            background-color: #ffffff;
+            position: relative;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px 0px, rgba(0, 0, 0, 0.15) 0px 2px 6px 2px;
+        }
+
+        .post-title {
+            font-size: 20px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .created-by-text {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .excerpt, .content {
+            flex: 1;
+            margin-bottom: 10px;
+        }
+
+        .particular-post-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+            padding-bottom: 5px;
+        }
+
+        .published-at {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .particular-post-bottom button {
+            height: 40px;
+            width: 120px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .particular-post-bottom button:hover {
+            background-color: #333;
+        }
+
+        .post-title, .created-by-text, .excerpt, .content, .published-at {
+            word-wrap: break-word;
+        }
+
+        #filterForm {
+
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+
+        }
+
+        .dropdown-toggle {
+            height: 45px;
+            width: 100%;
+            min-width:150px;
+            font-weight: bold;
+            font-size: 18px;
+            background: white;
+            border-radius: 8px;
+            color: black;
+            border: 2px solid #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            transition: all 0.5s;
+        }
+
+        .dropdown-toggle i {
+            margin-left: 10px;
+        }
+
+        .dropdown-menu {
+            display: none; /* Default hidden */
+            position: absolute;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px;
+            border-radius: 10px;
+            padding: 15px;
+            z-index: 1;
+            width: 250px;
+
+            top: 50px;
+            left: 0;
+        }
+
+        .dropdown-section {
+            height: 150px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checkbox-group li {
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group label {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .dropdown-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 150px;
+            padding-top: 10px;
+        }
+
+        .dropdown-action button {
+            height: 40px;
+            width: 180px; /* Increased button width */
+            font-weight: bold;
+            font-size: 16px;
+            background: #000;
+            border-radius: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dropdown-action button:hover {
+            background-color: #333;
+        }
+
+        #closeIcon {
+            cursor: pointer;
+            font-size: 22px;
+            color: #000;
+        }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            margin-top: auto;
+            background:black;
+            border:2px solid white;
+            border-radius:10px;
+            padding:20px;
+        }
+
+        .pagination button {
+            height: 40px;
+            width: 100px;
+            font-weight: bold;
+            font-size: 16px;
+            background: white;
+            border-radius: 10px;
+            color: black;
+            border: 2px solid #000;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0 10px;
+        }
+
+        .pagination button:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        .page-number {
+            font-size: 18px;
+            font-weight: bold;
+            color:white;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <div class="blog-title">
+            <h1>Blog Application</h1>
+        </div>
+        <div class="header-buttons">
+            <div class="add-post">
+                <a th:href="@{/posts/new}"><button>Add new Post</button></a>
+            </div>
+            <div class="login">
+                <button>Login</button>
+            </div>
+            <div class="register">
+                <button>Register</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="filtering">
+        <div class="search-box">
+
+            <form  th:action="@{/}" method="get" >
+                <input type="text" placeholder="Search by title, content, author, or tags" id="search" name="searchTerm"  />
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="filters">
+
+            <div id="filterForm">
+                <form th:action="@{/}" method="get">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle" id="dropdownToggle" type="button">
+                            Filter
+                            <i id="dropdownArrow" class="fas fa-chevron-down"></i> <!-- Down arrow icon -->
+                        </button>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <div class="dropdown-section">
+                                <span style="padding:2px;font-weight:bold;">Authors</span>
+                                <div class="checkbox-group" style="margin-top:10px;">
+                                    <ul>
+                                        <li th:each="author:${authors}">
+                                            <label>
+                                                <input type="checkbox" name="authorsList" th:value="${author}"/>
+                                                <span th:text="${author}"></span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="dropdown-section">
+                                <span style="padding:2px;font-weight:bold;">Tags</span>
+                                <div class="checkbox-group" style="margin-top:10px;">
+                                    <ul>
+                                        <li th:each="tag : ${tags}">
+                                            <label>
+                                                <input type="checkbox" name="tagsList" th:value="${tag.id}" />
+                                                <span th:text="${tag.name}"></span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="dropdown-action">
+                                <i class="fas fa-times" id="closeIcon"></i>
+                                <button type="submit">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div>
+                <form th:action="@{/}">
+                    <select id="sort" name="sortOrder">
+                        <option value="">Sort by</option>
+                        <option value="desc">Newest First</option>
+                        <option value="asc">Oldest First</option>
+                    </select>
+                    <button type="submit">Click</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="posts-list">
+        <div class="particular-post" th:each="post : ${posts}">
+            <div class="post-title" th:text="${post.title}">Title</div>
+            <div class="created-by-text" th:text="'Created by :'+${post.author}">Author</div>
+            <div th:text="${post.excerpt}">Excerpt</div>
+            <div th:text="${#strings.abbreviate(post.content, 100)}">Content</div>
+            <div class="particular-post-bottom">
+                <div th:text="${post.formattedDate}">Published At</div>
+                <div>
+                    <a th:href="@{/posts/{id}(id=${post.id}, sortOrder=${sortOrder},searchTerm=${searchTerm},page=${pageNumber},tagsList=${tagsList},authorsList=${authorsList})}"><button>Read More</button></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div>
+
+    </div>
+
+
+</div>
+<script>
+    const dropdownToggle = document.getElementById("dropdownToggle");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const dropdownArrow = document.getElementById("dropdownArrow");
+    const closeIcon = document.getElementById("closeIcon");
+    dropdownMenu.style.display = "none";
+    dropdownToggle.addEventListener("click",()=>{
+        if(dropdownMenu.style.display === "none") {
+            dropdownMenu.style.display = "block";
+            dropdownArrow.classList.remove('fa-chevron-down');
+            dropdownArrow.classList.add('fa-chevron-up');
+        }
+        else
+        {
+            dropdownMenu.style.display = 'none';
+            dropdownArrow.classList.remove('fa-chevron-up');
+            dropdownArrow.classList.add('fa-chevron-down');
+        }
+    });
+    closeIcon.addEventListener("click",()=>{
+        dropdownMenu.style.display = 'none';
+        dropdownArrow.classList.remove('fa-chevron-up');
+        dropdownArrow.classList.add('fa-chevron-down');
+    });
+</script>
+</body>
+</html>
