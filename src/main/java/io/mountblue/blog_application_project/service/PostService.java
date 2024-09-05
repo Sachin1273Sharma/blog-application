@@ -15,7 +15,9 @@ public class PostService {
         postRepository.save(post);
     }
 
-
+    public Post getPostById(Long id) {
+        return postRepository.findById(id).orElse(null);
+    }
     public List<Post> getAllPosts() {
        return postRepository.findAll();
     }

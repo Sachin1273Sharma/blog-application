@@ -6,12 +6,11 @@ import io.mountblue.blog_application_project.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class PostController {
@@ -41,5 +40,11 @@ public class PostController {
         tagService.cleanUpTags();
         model.addAttribute("posts", postService.getAllPosts());
         return "home";
+    }
+    @GetMapping("/posts/{id}")
+    public String showPostPage(@PathVariable("id") Long id, Model model) {
+        Post post = postService.getPostById(id);
+        model.addAttribute("post", post);
+        return "post";
     }
 }

@@ -444,7 +444,7 @@
             <div class="particular-post-bottom">
                 <div th:text="${post.formattedDate}">Published At</div>
                 <div>
-                    <a ><button>Read More</button></a>
+                    <a th:href="@{/posts/{id}(id=${post.id})}"><button>Read More</button></a>
                 </div>
             </div>
 
