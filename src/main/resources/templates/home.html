@@ -392,10 +392,10 @@
                                 <span style="padding:2px;font-weight:bold;">Authors</span>
                                 <div class="checkbox-group" style="margin-top:10px;">
                                     <ul>
-                                        <li th:each="author:${authors}">
+                                        <li>
                                             <label>
-                                                <input type="checkbox" name="authorsList" th:value="${author}"/>
-                                                <span th:text="${author}"></span>
+                                                <input type="checkbox" name="authorsList" />
+                                                <span ></span>
                                             </label>
                                         </li>
                                     </ul>
@@ -405,10 +405,10 @@
                                 <span style="padding:2px;font-weight:bold;">Tags</span>
                                 <div class="checkbox-group" style="margin-top:10px;">
                                     <ul>
-                                        <li th:each="tag : ${tags}">
+                                        <li >
                                             <label>
-                                                <input type="checkbox" name="tagsList" th:value="${tag.id}" />
-                                                <span th:text="${tag.name}"></span>
+                                                <input type="checkbox" name="tagsList" />
+                                                <span ></span>
                                             </label>
                                         </li>
                                     </ul>
@@ -444,7 +444,7 @@
             <div class="particular-post-bottom">
                 <div th:text="${post.formattedDate}">Published At</div>
                 <div>
-                    <a th:href="@{/posts/{id}(id=${post.id}, sortOrder=${sortOrder},searchTerm=${searchTerm},page=${pageNumber},tagsList=${tagsList},authorsList=${authorsList})}"><button>Read More</button></a>
+                    <a ><button>Read More</button></a>
                 </div>
             </div>
 

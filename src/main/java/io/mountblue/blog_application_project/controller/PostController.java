@@ -19,11 +19,13 @@ public class PostController {
     PostService postService;
     @Autowired
     TagService tagService;
+
     @GetMapping("/posts/new")
     public String showCreatePostPage(Model model) {
         model.addAttribute("post", new Post());
         return "create-post";
     }
+
     @PostMapping("/posts/save")
     public String savePost(@ModelAttribute("post") Post post, @RequestParam("tagsInput") String tags) {
         post.setCreatedAt(LocalDateTime.now());
@@ -32,5 +34,12 @@ public class PostController {
         postService.savePost(post);
         tagService.addTagsToPost(post.getId(), tags, false);
         return "redirect:/";
+    }
+
+    @GetMapping("/")
+    public String showHomePage(Model model) {
+        tagService.cleanUpTags();
+        model.addAttribute("posts", postService.getAllPosts());
+        return "home";
     }
 }
