@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    margin: 0;
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.normal-input label,
+.textarea-input label {
+    font-weight: bold;
+    color: #000;
+}
+
+.normal-input input,
+.textarea-input textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.textarea-input textarea {
+    resize: vertical;
+}
+
+.normal-input input[type="text"] {
+    height: 40px;
+}
+
+.textarea-input textarea#excerpt {
+    min-height: 60px;
+    max-height: 150px;
+}
+
+.textarea-input textarea#content {
+    min-height: 150px;
+    max-height: 300px;
+}
+
+button {
+    background-color: #000;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #333;
+}
+
+.create-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
