@@ -305,21 +305,21 @@
     </div>
     <div class="show-comments">
         <div class="comments-list">
-            <div >
+            <div th:if="${commentList.size() == 0}">
                 <p>No comments yet</p>
             </div>
-            <div >
-                <div  class="comment">
-                    <div class="commenter-name" ></div>
-                    <div class="commenter-email" ></div>
-                    <div class="commenter-comment" ></div>
-                    <div class="comment-time" ></div>
+            <div th:if="${commentList.size() > 0}">
+                <div th:each="comment : ${commentList}" class="comment">
+                    <div class="commenter-name" th:text="${comment.name}"></div>
+                    <div class="commenter-email" th:text="${comment.email}"></div>
+                    <div class="commenter-comment" th:text="${comment.comment}"></div>
+                    <div class="comment-time" th:text="${comment.formatCreateTime}"></div>
                     <div class="comment-buttons">
-                        <form  method="post" class="delete-comment-form">
+                        <form >
                             <input type="submit" value="Delete" class="delete-button">
-                            <input type="hidden" name="postId" >
+                            <input type="hidden" name="postId" th:value="${post.id}">
                         </form>
-                        <a >
+                        <a>
                             <button class="update-comment-button">Update Comment</button>
                         </a>
                     </div>
@@ -328,18 +328,17 @@
         </div>
     </div>
 
-
     <div class="add-comment-form">
-        <form  method="post" >
+        <form th:object="${commentForm}" method="post" th:action="@{/comment/{id}(id=${post.id})}">
             <label for="name">Name:
-                <input type="text" id="name"  required>
+                <input type="text" id="name" th:field="*{name}" required>
             </label>
 
             <label for="email">Email:
-                <input type="email" id="email"  required>
+                <input type="email" id="email" th:field="*{email}" required>
             </label>
             <label for="comment">Comment:
-                <textarea id="comment"   required></textarea>
+                <textarea id="comment"  th:field="*{comment}" required></textarea>
             </label>
             <input type="submit" value="Submit">
         </form>

@@ -1,5 +1,6 @@
 package io.mountblue.blog_application_project.controller;
 
+import io.mountblue.blog_application_project.entity.Comment;
 import io.mountblue.blog_application_project.entity.Post;
 import io.mountblue.blog_application_project.service.PostService;
 import io.mountblue.blog_application_project.service.TagService;
@@ -44,7 +45,10 @@ public class PostController {
     @GetMapping("/posts/{id}")
     public String showPostPage(@PathVariable("id") Long id, Model model) {
         Post post = postService.getPostById(id);
+        List<Comment> commentList = post.getComments();
         model.addAttribute("post", post);
+        model.addAttribute("commentList", commentList);
+        model.addAttribute("commentForm", new Comment());
         return "post";
     }
 }

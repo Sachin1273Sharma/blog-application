@@ -50,7 +50,7 @@ public class Comment {
         this.post = post;
     }
 
-    // Getters and setters
+
     public Long getId() {
         return id;
     }
