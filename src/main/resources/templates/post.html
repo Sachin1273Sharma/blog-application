@@ -279,15 +279,19 @@
 <div class="container">
     <div class="header">
         <div class="go-back">
-            <a> <button> Back to Home </button></a>
+            <a>
+                <button> Back to Home</button>
+            </a>
         </div>
-        <div class="update-post">
-            <div >
-                <button>Update Post</button>
-            </div>
+        <div class="update-post"><a th:href="@{/update/{id}(id=${post.id})}">
+            <button>Update Post</button>
+        </a>
+
 
         </div>
-        <div class="delete-post"><a><button>Delete Post</button></a></div>
+        <div class="delete-post"><a>
+            <button>Delete Post</button>
+        </a></div>
     </div>
     <div class="full-post">
         <div class="post-title" th:text="${post.title}">Title</div>
@@ -299,8 +303,12 @@
             <div class="particular-tag" th:each="tag:${post.tags}" th:text="${tag.name}">Tag</div>
         </div>
         <div class="comment-buttons">
-            <div class="comments"><button>See comments</button></div>
-            <div class="add-comments"><button>Add comments</button></div>
+            <div class="comments">
+                <button>See comments</button>
+            </div>
+            <div class="add-comments">
+                <button>Add comments</button>
+            </div>
         </div>
     </div>
     <div class="show-comments">
@@ -315,7 +323,8 @@
                     <div class="commenter-comment" th:text="${comment.comment}"></div>
                     <div class="comment-time" th:text="${comment.formatCreateTime}"></div>
                     <div class="comment-buttons">
-                        <form th:action="@{/deleteComment/{id}(id=${comment.id})}" method="post" class="delete-comment-form">
+                        <form th:action="@{/deleteComment/{id}(id=${comment.id})}" method="post"
+                              class="delete-comment-form">
                             <input type="submit" value="Delete" class="delete-button">
                             <input type="hidden" name="postId" th:value="${post.id}">
                         </form>
@@ -338,7 +347,7 @@
                 <input type="email" id="email" th:field="*{email}" required>
             </label>
             <label for="comment">Comment:
-                <textarea id="comment"  th:field="*{comment}" required></textarea>
+                <textarea id="comment" th:field="*{comment}" required></textarea>
             </label>
             <input type="submit" value="Submit">
         </form>
