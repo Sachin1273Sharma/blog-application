@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Comment</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+
+        .normal-input {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical; /* Allows textarea to be resized vertically only */
+            height: 80px; /* Default height */
+        }
+
+
+        .submit-button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            width: 100%; /* Full width button */
+        }
+
+        .submit-button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>Edit Comment</h1>
+    </div>
+    <form th:object="${commentForm}" method="post" th:action="@{/updateComment/{id}(id=${commentForm.id},postId=${postId})}">
+        <div class="normal-input">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" required/>
+        </div>
+        <div class="normal-input">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required/>
+        </div>
+        <div class="normal-input">
+            <label for="comment">Comment:</label>
+            <textarea id="comment" th:field="*{comment}" required></textarea>
+        </div>
+        <div>
+            <button type="submit" class="submit-button">Update</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

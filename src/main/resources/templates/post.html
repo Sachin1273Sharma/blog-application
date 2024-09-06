@@ -319,7 +319,7 @@
                             <input type="submit" value="Delete" class="delete-button">
                             <input type="hidden" name="postId" th:value="${post.id}">
                         </form>
-                        <a>
+                        <a th:href="@{/updateComment/{id}(id=${comment.id},postId=${post.id})}">
                             <button class="update-comment-button">Update Comment</button>
                         </a>
                     </div>
