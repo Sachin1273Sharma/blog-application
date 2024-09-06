@@ -289,9 +289,7 @@
 
 
         </div>
-        <div class="delete-post"><a>
-            <button>Delete Post</button>
-        </a></div>
+        <div class="delete-post"><a th:href="@{/delete/{id}(id=${post.id})}"><button>Delete Post</button></a></div>
     </div>
     <div class="full-post">
         <div class="post-title" th:text="${post.title}">Title</div>

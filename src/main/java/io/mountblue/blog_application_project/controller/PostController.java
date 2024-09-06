@@ -80,4 +80,10 @@ public class PostController {
         tagService.addTagsToPost(post.getId(), tags, true);
         return "redirect:/posts/" + post.getId();
     }
+    @GetMapping("/delete/{id}")
+    public String deletePost(@PathVariable("id") Long id) {
+        postService.deletePostById(id);
+        tagService.cleanUpTags();
+        return "redirect:/";
+    }
 }
