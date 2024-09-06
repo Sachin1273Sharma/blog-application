@@ -427,8 +427,8 @@
                 <form th:action="@{/}">
                     <select id="sort" name="sortOrder">
                         <option value="">Sort by</option>
-                        <option value="desc">Newest First</option>
-                        <option value="asc">Oldest First</option>
+                        <option value="desc" th:selected="${sortOrder == 'desc'}">Newest First</option>
+                        <option value="asc" th:selected="${sortOrder == 'asc'}">Oldest First</option>
                     </select>
                     <button type="submit">Click</button>
                 </form>

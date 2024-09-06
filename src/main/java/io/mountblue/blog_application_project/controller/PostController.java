@@ -46,6 +46,10 @@ public class PostController {
         if(!searchTerm.trim().isEmpty()) {
              posts = postService.searchPosts(searchTerm);
         }
+        else if(sortOrder!=null)
+        {
+            posts=postService.sortPosts(sortOrder);
+        }
         else
         {
             posts=postService.getAllPosts();

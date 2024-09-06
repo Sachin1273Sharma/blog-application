@@ -3,6 +3,7 @@ package io.mountblue.blog_application_project.service;
 import io.mountblue.blog_application_project.entity.Post;
 import io.mountblue.blog_application_project.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,5 +28,19 @@ public class PostService {
 
     public List<Post> searchPosts(String searchTerm) {
         return postRepository.searchPosts(searchTerm);
+    }
+
+    public List<Post> sortPosts(String sortOrder) {
+        List<Post> posts=null;
+        if(sortOrder.equals("asc"))
+        {
+            posts=postRepository.findAll(Sort.by(Sort.Direction.ASC,"publishedAt"));
+
+        }
+        else
+        {
+            posts=postRepository.findAll(Sort.by(Sort.Direction.DESC,"publishedAt"));
+        }
+        return posts;
     }
 }
