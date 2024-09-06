@@ -24,4 +24,8 @@ public class PostService {
     public void deletePostById(Long id) {
         postRepository.deleteById(id);
     }
+
+    public List<Post> searchPosts(String searchTerm) {
+        return postRepository.searchPosts(searchTerm);
+    }
 }

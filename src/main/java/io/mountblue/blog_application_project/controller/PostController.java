@@ -40,9 +40,18 @@ public class PostController {
     }
 
     @GetMapping("/")
-    public String showHomePage(Model model) {
+    public String showHomePage(Model model,@RequestParam(value="searchTerm",defaultValue = "" ) String searchTerm,@RequestParam(value="sortOrder",required = false) String sortOrder) {
         tagService.cleanUpTags();
-        model.addAttribute("posts", postService.getAllPosts());
+        List<Post> posts=null;
+        if(!searchTerm.trim().isEmpty()) {
+             posts = postService.searchPosts(searchTerm);
+        }
+        else
+        {
+            posts=postService.getAllPosts();
+        }
+        model.addAttribute("searchTerm",searchTerm);
+        model.addAttribute("posts", posts);
         return "home";
     }
     @GetMapping("/posts/{id}")
