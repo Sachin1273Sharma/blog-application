@@ -47,4 +47,10 @@ public class CommentController {
         commentService.saveComment(oldComment);
         return "redirect:/posts/"+postId;
     }
+    @PostMapping("/deleteComment/{commentId}")
+    public String deleteComment(@PathVariable Long commentId,@RequestParam("postId") Long postId)
+    {
+        commentService.deleteCommentById(commentId);
+        return "redirect:/posts/"+postId;
+    }
 }

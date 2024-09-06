@@ -315,7 +315,7 @@
                     <div class="commenter-comment" th:text="${comment.comment}"></div>
                     <div class="comment-time" th:text="${comment.formatCreateTime}"></div>
                     <div class="comment-buttons">
-                        <form >
+                        <form th:action="@{/deleteComment/{id}(id=${comment.id})}" method="post" class="delete-comment-form">
                             <input type="submit" value="Delete" class="delete-button">
                             <input type="hidden" name="postId" th:value="${post.id}">
                         </form>

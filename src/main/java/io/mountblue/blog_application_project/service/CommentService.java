@@ -17,4 +17,7 @@ public class CommentService {
     public void saveComment(Comment oldComment) {
         commentRepository.save(oldComment);
     }
+    public void deleteCommentById(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 }
