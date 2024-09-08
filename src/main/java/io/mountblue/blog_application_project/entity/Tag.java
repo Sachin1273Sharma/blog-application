@@ -25,17 +25,6 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private Set<Post> posts = new HashSet<>();
 
-    public Tag() {
-    }
-
-    public Tag(Long id, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Post> posts) {
-        this.id = id;
-        this.name = name;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.posts = posts;
-    }
-
     public Long getId() {
         return id;
     }
@@ -74,16 +63,6 @@ public class Tag {
 
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
-    }
-
-    @Override
-    public String toString() {
-        return "Tag{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }
 

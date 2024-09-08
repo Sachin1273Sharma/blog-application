@@ -7,11 +7,9 @@ import java.time.format.DateTimeFormatter;
 @Entity
 @Table(name = "comment")
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String email;
     @Column(columnDefinition = "TEXT")
@@ -28,25 +26,12 @@ public class Comment {
 
     @Transient
     private String formatCreateTime;
+
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mm:ss a");
 
     public String getFormatCreateTime() {
         return this.createdAt.format(FORMATTER);
     }
-
-    public Comment() {
-    }
-
-    public Comment(Long id, String name, String email, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, Post post) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.comment = comment;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.post = post;
-    }
-
 
     public Long getId() {
         return id;
@@ -104,16 +89,5 @@ public class Comment {
         this.post = post;
     }
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", comment='" + comment + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }
 

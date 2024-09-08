@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,8 @@ public class PostService {
 
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    TagService tagService;
 
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);
@@ -68,5 +71,23 @@ public class PostService {
             filtered = postRepository.findAll(pageable);
         }
         return filtered;
+    }
+    public void updatePost(Long id, Post updatedPost, String tags)
+    {
+        Post oldPost = getPostById(id);
+        oldPost.setTitle(updatedPost.getTitle());
+        oldPost.setUpdatedAt(LocalDateTime.now());
+        oldPost.setAuthor(updatedPost.getAuthor());
+        oldPost.setContent(updatedPost.getContent());
+        oldPost.setExcerpt(updatedPost.getExcerpt());
+        savePost(oldPost);
+        tagService.addTagsToPost(id, tags, true);
+    }
+
+    public void createNewPost(Post post, String tags) {
+        post.setCreatedAt(LocalDate.now());
+        post.setPublishedAt(LocalDateTime.now());
+        savePost(post);
+        tagService.addTagsToPost(post.getId(), tags, false);
     }
 }

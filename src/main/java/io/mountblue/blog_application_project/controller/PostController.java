@@ -15,17 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @Controller
-
 public class PostController {
-
     @Autowired
     PostService postService;
     @Autowired
@@ -41,10 +38,7 @@ public class PostController {
 
     @PostMapping("/posts/save")
     public String savePost(@ModelAttribute("post") Post post, @RequestParam("tagsInput") String tags) {
-        post.setCreatedAt(LocalDate.now());
-        post.setPublishedAt(LocalDateTime.now());
-        postService.savePost(post);
-        tagService.addTagsToPost(post.getId(), tags, false);
+        postService.createNewPost(post, tags);
         return "redirect:/";
     }
 
@@ -59,11 +53,10 @@ public class PostController {
         } else {
             sort = Sort.by(Sort.Direction.DESC, "publishedAt");
         }
-
         Pageable pageable = PageRequest.of(page, size, sort);
-        Integer totalPages = 0;
+        int totalPages = 0;
         List<Post> posts;
-        if (authorsList != null && !authorsList.isEmpty() || tagsList != null && !tagsList.isEmpty() || publishedDate != null) {
+        if (authorsList != null && !authorsList.isEmpty() || tagsList != null && !tagsList.isEmpty() || publishedDate != null && !publishedDate.trim().isEmpty()) {
             Page<Post> filterPosts = postService.filterPosts(authorsList, tagsList, publishedDate, pageable);
             totalPages = filterPosts.getTotalPages();
             posts = filterPosts.getContent();
@@ -123,14 +116,7 @@ public class PostController {
 
     @PostMapping("/update/{id}")
     public String updatePost(@PathVariable("id") Long id, @ModelAttribute("post") Post post, @RequestParam("tagsInput") String tags) {
-        Post oldPost = postService.getPostById(id);
-        oldPost.setTitle(post.getTitle());
-        oldPost.setUpdatedAt(LocalDateTime.now());
-        oldPost.setAuthor(post.getAuthor());
-        oldPost.setContent(post.getContent());
-        oldPost.setExcerpt(post.getExcerpt());
-        postService.savePost(oldPost);
-        tagService.addTagsToPost(post.getId(), tags, true);
+        postService.updatePost(id, post, tags);
         return "redirect:/posts/" + post.getId();
     }
 

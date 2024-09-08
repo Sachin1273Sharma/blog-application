@@ -37,10 +37,6 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-  /* @ManyToOne
-    @JoinColumn(name = "user_id")
-    private String user*/;
-
     @ManyToMany
     @JoinTable(
             name = "post_tags",
@@ -61,24 +57,6 @@ public class Post {
         return this.publishedAt.format(FORMATTER);
     }
 
-    public Post() {
-    }
-
-    public Post(Long id, String title, String excerpt, String content, String author, LocalDateTime publishedAt, Boolean isPublished, LocalDate createdAt, LocalDateTime updatedAt, Set<Tag> tags, List<Comment> comments) {
-        this.id = id;
-        this.title = title;
-        this.excerpt = excerpt;
-        this.content = content;
-        this.author = author;
-        this.publishedAt = publishedAt;
-        this.isPublished = isPublished;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.tags = tags;
-        this.comments = comments;
-    }
-
-    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -151,14 +129,6 @@ public class Post {
         this.updatedAt = updatedAt;
     }
 
-    /* public User getUser() {
-         return user;
-     }
-
-     public void setUser(User user) {
-         this.user = user;
-     }
- */
     public Set<Tag> getTags() {
         return tags;
     }
@@ -173,22 +143,5 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", excerpt='" + excerpt + '\'' +
-                ", content='" + content + '\'' +
-                ", author='" + author + '\'' +
-                ", publishedAt=" + publishedAt +
-                ", isPublished=" + isPublished +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", tags=" + tags +
-                ", comments=" + comments +
-                '}';
     }
 }
