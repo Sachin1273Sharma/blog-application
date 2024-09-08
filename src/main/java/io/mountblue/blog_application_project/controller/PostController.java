@@ -3,13 +3,19 @@ package io.mountblue.blog_application_project.controller;
 import io.mountblue.blog_application_project.entity.Comment;
 import io.mountblue.blog_application_project.entity.Post;
 import io.mountblue.blog_application_project.entity.Tag;
+import io.mountblue.blog_application_project.repository.TagRepository;
 import io.mountblue.blog_application_project.service.PostService;
 import io.mountblue.blog_application_project.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,11 +23,15 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
+
 public class PostController {
+
     @Autowired
     PostService postService;
     @Autowired
     TagService tagService;
+    @Autowired
+    TagRepository tagrepository;
 
     @GetMapping("/posts/new")
     public String showCreatePostPage(Model model) {
@@ -31,42 +41,72 @@ public class PostController {
 
     @PostMapping("/posts/save")
     public String savePost(@ModelAttribute("post") Post post, @RequestParam("tagsInput") String tags) {
-        post.setCreatedAt(LocalDateTime.now());
+        post.setCreatedAt(LocalDate.now());
         post.setPublishedAt(LocalDateTime.now());
-        post.setIsPublished(true);
         postService.savePost(post);
         tagService.addTagsToPost(post.getId(), tags, false);
         return "redirect:/";
     }
 
     @GetMapping("/")
-    public String showHomePage(Model model,@RequestParam(value="searchTerm",defaultValue = "" ) String searchTerm,@RequestParam(value="sortOrder",required = false) String sortOrder) {
+    public String showHomePage(Model model, @RequestParam(required = false) String searchTerm, @RequestParam(value = "sortOrder", defaultValue = "") String sortOrder, @RequestParam(value = "authorsList", required = false) List<String> authorsList,
+                               @RequestParam(value = "tagsList", required = false) List<Long> tagsList
+            , @RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "size", defaultValue = "4") Integer size, @RequestParam(value = "publishedDate", required = false) String publishedDate) {
         tagService.cleanUpTags();
-        List<Post> posts=null;
-        if(!searchTerm.trim().isEmpty()) {
-             posts = postService.searchPosts(searchTerm);
+        Sort sort;
+        if (sortOrder.equals("asc")) {
+            sort = Sort.by(Sort.Direction.ASC, "publishedAt");
+        } else {
+            sort = Sort.by(Sort.Direction.DESC, "publishedAt");
         }
-        else if(sortOrder!=null)
-        {
-            posts=postService.sortPosts(sortOrder);
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Integer totalPages = 0;
+        List<Post> posts;
+        if (authorsList != null && !authorsList.isEmpty() || tagsList != null && !tagsList.isEmpty() || publishedDate != null) {
+            Page<Post> filterPosts = postService.filterPosts(authorsList, tagsList, publishedDate, pageable);
+            totalPages = filterPosts.getTotalPages();
+            posts = filterPosts.getContent();
+        } else if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            Page<Post> searchedPosts = postService.searchPosts(searchTerm, pageable);
+            posts = searchedPosts.getContent();
+            totalPages = searchedPosts.getTotalPages();
+        } else {
+            Page<Post> allPosts = postService.getAllPosts(pageable);
+            posts = allPosts.getContent();
+            totalPages = allPosts.getTotalPages();
         }
-        else
-        {
-            posts=postService.getAllPosts();
-        }
-        model.addAttribute("searchTerm",searchTerm);
+
         model.addAttribute("posts", posts);
+        model.addAttribute("authors", postService.getAllAuthors());
+        model.addAttribute("tags", tagrepository.findAll());
+        model.addAttribute("pageNumber", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("sortOrder", sortOrder);
+        model.addAttribute("authorsList", authorsList != null ? authorsList : Collections.emptyList());
+        model.addAttribute("tagsList", tagsList != null ? tagsList : Collections.emptyList());
+        model.addAttribute("publishedDate", publishedDate);
         return "home";
     }
+
     @GetMapping("/posts/{id}")
-    public String showPostPage(@PathVariable("id") Long id, Model model) {
+    public String showPostPage(@PathVariable("id") Long id, Model model, @RequestParam(value = "sortOrder", required = false) String sortOrder, @RequestParam(value = "searchTerm", defaultValue = "") String searchTerm,
+                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "authorsList", required = false) List<String> authorsList, @RequestParam(value = "tagsList", required = false) List<Long> tagsList) {
         Post post = postService.getPostById(id);
         List<Comment> commentList = post.getComments();
+
         model.addAttribute("post", post);
         model.addAttribute("commentList", commentList);
         model.addAttribute("commentForm", new Comment());
+        model.addAttribute("sortOrder", sortOrder != null ? sortOrder : "");
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("page", page);
+        model.addAttribute("authorsList", (authorsList != null && !authorsList.isEmpty()) ? authorsList : Collections.emptyList());
+        model.addAttribute("tagsList", (tagsList != null && !tagsList.isEmpty()) ? tagsList : Collections.emptyList());
         return "post";
     }
+
     @GetMapping("/update/{id}")
     public String showUpdatePage(@PathVariable("id") Long id, Model model) {
         Post post = postService.getPostById(id);
@@ -93,6 +133,7 @@ public class PostController {
         tagService.addTagsToPost(post.getId(), tags, true);
         return "redirect:/posts/" + post.getId();
     }
+
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable("id") Long id) {
         postService.deletePostById(id);

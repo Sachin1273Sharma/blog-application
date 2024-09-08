@@ -6,7 +6,6 @@ import io.mountblue.blog_application_project.repository.PostRepository;
 import io.mountblue.blog_application_project.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -20,11 +19,9 @@ public class TagService {
     @Autowired
     private PostRepository postRepository;
 
-    @Transactional
     public void addTagsToPost(Long postId, String tags, Boolean updatable) {
         Post post = postRepository.findById(postId).orElse(null);
-        if(tags.equals(""))
-        {
+        if (tags.equals("")) {
             Set<Tag> postTags = post.getTags();
             postTags.clear();
             cleanUpTags();
@@ -55,9 +52,7 @@ public class TagService {
                 tag.getPosts().add(post);
             }
             cleanUpTags();
-        }
-        else
-        {
+        } else {
             for (String tagName : tagsList) {
                 String trimTagName = tagName.trim();
                 Tag tag;
@@ -80,17 +75,12 @@ public class TagService {
         tag.setUpdatedAt(LocalDateTime.now());
         return tagRepository.save(tag);
     }
-    @Transactional
-    public void cleanUpTags()
-    {
-        for(Tag tag:tagRepository.findAll())
-        {
-            System.out.println(tag.getPosts());
-            if(tag.getPosts().isEmpty())
-            {
+
+    public void cleanUpTags() {
+        for (Tag tag : tagRepository.findAll()) {
+            if (tag.getPosts().isEmpty()) {
                 tagRepository.delete(tag);
             }
         }
     }
-
 }

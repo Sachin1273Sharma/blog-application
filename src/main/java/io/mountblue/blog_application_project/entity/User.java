@@ -1,7 +1,6 @@
 package io.mountblue.blog_application_project.entity;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,11 +17,9 @@ public class User {
     /*@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;*/
 
-    // Default constructor
     public User() {
     }
 
-    // Parameterized constructor
     public User(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
@@ -30,7 +27,6 @@ public class User {
         this.password = password;
     }
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

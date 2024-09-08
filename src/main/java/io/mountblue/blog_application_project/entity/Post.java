@@ -1,6 +1,8 @@
 package io.mountblue.blog_application_project.entity;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class Post {
     private Boolean isPublished;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
@@ -45,10 +47,10 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tag> tags=new HashSet<>();
+    private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments=new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     @Transient
     private String formattedDate;
@@ -56,17 +58,13 @@ public class Post {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d MMM yyyy 'at' h:mm a");
 
     public String getFormattedDate() {
-        return this.createdAt.format(FORMATTER);
+        return this.publishedAt.format(FORMATTER);
     }
 
-
-
-    // Default constructor
     public Post() {
     }
 
-    // Parameterized constructor
-    public Post(Long id, String title, String excerpt, String content, String author, LocalDateTime publishedAt, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Tag> tags, List<Comment> comments) {
+    public Post(Long id, String title, String excerpt, String content, String author, LocalDateTime publishedAt, Boolean isPublished, LocalDate createdAt, LocalDateTime updatedAt, Set<Tag> tags, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.excerpt = excerpt;
@@ -137,11 +135,11 @@ public class Post {
         this.isPublished = isPublished;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 

@@ -10,47 +10,48 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+
 @Controller
 public class CommentController {
     @Autowired
     PostService postService;
     @Autowired
     CommentService commentService;
+
     @PostMapping("/comment/{postId}")
-    public String addNewComment(@PathVariable Long postId, @ModelAttribute("commentForm") Comment comment)
-    {
-        Post post=postService.getPostById(postId);
+    public String addNewComment(@PathVariable Long postId, @ModelAttribute("commentForm") Comment comment) {
+        Post post = postService.getPostById(postId);
         comment.setPost(post);
-        LocalDateTime localDateTime=LocalDateTime.now();
+        LocalDateTime localDateTime = LocalDateTime.now();
         comment.setCreatedAt(localDateTime);
         comment.setUpdatedAt(localDateTime);
         post.getComments().add(comment);
         postService.savePost(post);
-        return "redirect:/posts/"+postId;
+        return "redirect:/posts/" + postId;
     }
+
     @GetMapping("/updateComment/{commentId}")
-    public String updateComment(@PathVariable Long commentId, @RequestParam("postId") Long postId, Model model)
-    {
-        Comment comment=commentService.getCommentById(commentId);
-        model.addAttribute("commentForm",comment);
-        model.addAttribute("postId",postId);
+    public String updateComment(@PathVariable Long commentId, @RequestParam("postId") Long postId, Model model) {
+        Comment comment = commentService.getCommentById(commentId);
+        model.addAttribute("commentForm", comment);
+        model.addAttribute("postId", postId);
         return "update-comment";
     }
+
     @PostMapping("/updateComment/{id}")
-    public String updateComment(@PathVariable Long id ,@ModelAttribute("commentForm") Comment comment,@RequestParam("postId") Long postId)
-    {
-        Comment oldComment=commentService.getCommentById(id);
+    public String updateComment(@PathVariable Long id, @ModelAttribute("commentForm") Comment comment, @RequestParam("postId") Long postId) {
+        Comment oldComment = commentService.getCommentById(id);
         oldComment.setName(comment.getName());
         oldComment.setEmail(comment.getEmail());
         oldComment.setComment(comment.getComment());
         oldComment.setUpdatedAt(LocalDateTime.now());
         commentService.saveComment(oldComment);
-        return "redirect:/posts/"+postId;
+        return "redirect:/posts/" + postId;
     }
+
     @PostMapping("/deleteComment/{commentId}")
-    public String deleteComment(@PathVariable Long commentId,@RequestParam("postId") Long postId)
-    {
+    public String deleteComment(@PathVariable Long commentId, @RequestParam("postId") Long postId) {
         commentService.deleteCommentById(commentId);
-        return "redirect:/posts/"+postId;
+        return "redirect:/posts/" + postId;
     }
 }

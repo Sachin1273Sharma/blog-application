@@ -1,6 +1,7 @@
 package io.mountblue.blog_application_project.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,11 +25,9 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private Set<Post> posts = new HashSet<>();
 
-    // Default constructor
     public Tag() {
     }
 
-    // Parameterized constructor
     public Tag(Long id, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Post> posts) {
         this.id = id;
         this.name = name;
@@ -37,7 +36,6 @@ public class Tag {
         this.posts = posts;
     }
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

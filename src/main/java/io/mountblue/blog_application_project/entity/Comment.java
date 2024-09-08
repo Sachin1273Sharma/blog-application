@@ -30,17 +30,14 @@ public class Comment {
     private String formatCreateTime;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, hh:mm:ss a");
 
-    public String getFormatCreateTime()
-    {
+    public String getFormatCreateTime() {
         return this.createdAt.format(FORMATTER);
     }
 
-    // Default constructor
     public Comment() {
     }
 
-    // Parameterized constructor
-    public Comment(Long id, String name, String email, String comment,LocalDateTime createdAt, LocalDateTime updatedAt, Post post) {
+    public Comment(Long id, String name, String email, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, Post post) {
         this.id = id;
         this.name = name;
         this.email = email;
