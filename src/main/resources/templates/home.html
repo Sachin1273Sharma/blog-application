@@ -54,7 +54,7 @@
                             <div style="height:100px" class="dropdown-section">
                                 <span style="padding:2px;font-weight:bold;">Published Date</span>
                                 <div class="date-group" style="margin-top:10px;">
-                                    <input type="date" id="publishedDate" name="publishedDate"/>
+                                    <input type="date" id="publishedDate" name="publishedDate" th:value="${publishedDate}"/>
                                 </div>
                             </div>
 
@@ -107,7 +107,7 @@
             <div class="particular-post-bottom">
                 <div th:text="${post.formattedDate}">Published At</div>
                 <div>
-                    <a th:href="@{/posts/{id}(id=${post.id}, sortOrder=${sortOrder},searchTerm=${searchTerm},page=${pageNumber},tagsList=${tagsList},authorsList=${authorsList})}">
+                    <a th:href="@{/posts/{id}(id=${post.id}, sortOrder=${sortOrder},searchTerm=${searchTerm},page=${pageNumber},tagsList=${tagsList},authorsList=${authorsList},publishedDate=${publishedDate})}">
                         <button>Read More</button>
                     </a>
                 </div>
@@ -123,7 +123,7 @@
 
             <button>Previous</button>
         </a>
-        <span class="page-number" th:text="${pageNumber + 1} +' of '+${totalPages}">1</span>
+        <span class="page-number" th:text="${pageNumber + 1} +' of '+${totalPages==0?1:totalPages}">1</span>
         <a th:if="${pageNumber + 1 < totalPages}"
            th:href="@{/?(page=${pageNumber + 1},sortOrder=${sortOrder},searchTerm=${searchTerm},authorsList=${authorsList},tagsList=${tagsList},publishedDate=${publishedDate})}">
             <button>Next</button>

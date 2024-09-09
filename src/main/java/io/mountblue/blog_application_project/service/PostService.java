@@ -67,7 +67,6 @@ public class PostService {
         } else if (parsedDate != null) {
             filtered = postRepository.findByCreatedAt(parsedDate, pageable);
         } else {
-
             filtered = postRepository.findAll(pageable);
         }
         return filtered;
@@ -86,6 +85,7 @@ public class PostService {
 
     public void createNewPost(Post post, String tags) {
         post.setCreatedAt(LocalDate.now());
+        post.setIsPublished(true);
         post.setPublishedAt(LocalDateTime.now());
         savePost(post);
         tagService.addTagsToPost(post.getId(), tags, false);

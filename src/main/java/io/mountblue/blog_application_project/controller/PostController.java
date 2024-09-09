@@ -85,7 +85,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public String showPostPage(@PathVariable("id") Long id, Model model, @RequestParam(value = "sortOrder", required = false) String sortOrder, @RequestParam(value = "searchTerm", defaultValue = "") String searchTerm,
-                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "authorsList", required = false) List<String> authorsList, @RequestParam(value = "tagsList", required = false) List<Long> tagsList) {
+                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "authorsList", required = false) List<String> authorsList, @RequestParam(value = "tagsList", required = false) List<Long> tagsList,@RequestParam(value="publishedDate",required=false) String publishedDate) {
         Post post = postService.getPostById(id);
         List<Comment> commentList = post.getComments();
 
@@ -97,6 +97,7 @@ public class PostController {
         model.addAttribute("page", page);
         model.addAttribute("authorsList", (authorsList != null && !authorsList.isEmpty()) ? authorsList : Collections.emptyList());
         model.addAttribute("tagsList", (tagsList != null && !tagsList.isEmpty()) ? tagsList : Collections.emptyList());
+        model.addAttribute("publishedDate",publishedDate);
         return "post";
     }
 
