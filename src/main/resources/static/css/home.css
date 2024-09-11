@@ -31,12 +31,12 @@
     gap: 5%;
 }
 
-.login button, .register button, .add-post button {
+.login button, .register button, .add-post button,.logout-form button {
     height: 50px;
-    width: 250px;
+    width: 150px;
     color: black;
     background: white;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     border-radius: 10px;
     border: 2px solid #000;
@@ -277,7 +277,7 @@
 
 .dropdown-action button {
     height: 40px;
-    width: 180px; /* Increased button width */
+    width: 180px; 
     font-weight: bold;
     font-size: 16px;
     background: #000;
@@ -347,4 +347,20 @@
     border: 2px solid #000;
     padding-left: 10px;
     box-sizing: border-box;
+}
+.username-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+}
+
+.username-display span {
+    display: none;
+}
+
+.username-display span:first-of-type {
+    display: inline;
 }

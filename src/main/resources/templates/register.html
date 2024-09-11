@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <script src="https://kit.fontawesome.com/7ab6a01705.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            color: #000;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form
+        {
+            width:100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #000;
+            font-size: 16px;
+            box-sizing: border-box; /* Ensures padding is included in the width */
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            padding-right: 4px; /* Space for the icon */
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #000;
+        }
+
+        .error {
+            color: #f00;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            border: 2px solid #000;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .login-link a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Register</h2>
+
+    <form id="signupForm"  method="post" th:action="@{/registerUser}" th:object="${userForm}" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" th:field="*{email}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" name="password" th:field="*{password}" required>
+                <i class="fas fa-eye toggle-password" onclick="togglePassword('password')"></i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Re-enter Password</label>
+            <div class="password-container">
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <i class="fas fa-eye toggle-password" onclick="togglePassword('confirmPassword')"></i>
+            </div>
+        </div>
+        <div id="error-message" class="error"></div>
+        <button type="submit">Sign Up</button>
+        <div class="login-link">
+            Already registered? <a href="/login">Login here</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Function to validate if passwords match
+    function validateForm() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const errorMessage = document.getElementById('error-message');
+
+        if (password !== confirmPassword) {
+            errorMessage.textContent = "Passwords do not match!";
+            return false;
+        }
+        return true;
+    }
+
+
+    function togglePassword(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const icon = passwordField.nextElementSibling;
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+</script>
+
+</body>
+</html>

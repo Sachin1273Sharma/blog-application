@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 @Service
 public class CommentService {
     @Autowired
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     public Comment getCommentById(Long commentId) {
         return commentRepository.findById(commentId).orElse(null);
     }
 
-    public void updateComment(Long id,Comment comment) {
+    public void updateComment(Long id, Comment comment) {
 
         Comment oldComment = getCommentById(id);
         oldComment.setName(comment.getName());

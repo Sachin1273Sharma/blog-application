@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("SELECT DISTINCT p.author FROM Post p")
+    @Query("SELECT  p.author FROM Post p")
     Set<String> findAllAuthors();
     @Query("SELECT DISTINCT p FROM Post p " +
             "LEFT JOIN p.tags t " +

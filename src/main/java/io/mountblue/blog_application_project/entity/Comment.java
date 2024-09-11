@@ -1,23 +1,23 @@
 package io.mountblue.blog_application_project.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
-@Table(name = "comment")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String email;
+
     @Column(columnDefinition = "TEXT")
     private String comment;
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @ManyToOne

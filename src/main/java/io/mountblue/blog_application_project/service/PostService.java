@@ -16,9 +16,9 @@ import java.util.Set;
 public class PostService {
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
     @Autowired
-    TagService tagService;
+    private TagService tagService;
 
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);
@@ -71,8 +71,8 @@ public class PostService {
         }
         return filtered;
     }
-    public void updatePost(Long id, Post updatedPost, String tags)
-    {
+
+    public void updatePost(Long id, Post updatedPost, String tags) {
         Post oldPost = getPostById(id);
         oldPost.setTitle(updatedPost.getTitle());
         oldPost.setUpdatedAt(LocalDateTime.now());

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class CommentController {
     @Autowired
-    CommentService commentService;
+   private CommentService commentService;
 
     @PostMapping("/comment/{postId}")
     public String addNewComment(@PathVariable Long postId, @ModelAttribute("commentForm") Comment comment) {

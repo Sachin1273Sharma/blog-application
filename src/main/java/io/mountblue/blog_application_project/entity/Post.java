@@ -11,31 +11,35 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "post")
 public class Post {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
+
     @Column(columnDefinition = "TEXT")
     private String excerpt;
+
     @Column(columnDefinition = "TEXT")
     private String content;
+
     private String author;
-
-    @Column(name = "published_at")
     private LocalDateTime publishedAt;
-
-    @Column(name = "is_published")
     private Boolean isPublished;
-
-    @Column(name = "created_at")
     private LocalDate createdAt;
-
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @ManyToMany
     @JoinTable(

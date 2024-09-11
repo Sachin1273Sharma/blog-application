@@ -3,18 +3,22 @@ package io.mountblue.blog_application_project.controller;
 import io.mountblue.blog_application_project.entity.Comment;
 import io.mountblue.blog_application_project.entity.Post;
 import io.mountblue.blog_application_project.entity.Tag;
+import io.mountblue.blog_application_project.entity.User;
 import io.mountblue.blog_application_project.repository.TagRepository;
 import io.mountblue.blog_application_project.service.PostService;
 import io.mountblue.blog_application_project.service.TagService;
+import io.mountblue.blog_application_project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,11 +28,13 @@ import java.util.Set;
 @Controller
 public class PostController {
     @Autowired
-    PostService postService;
+    private PostService postService;
     @Autowired
-    TagService tagService;
+    private TagService tagService;
     @Autowired
-    TagRepository tagrepository;
+    private TagRepository tagrepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/posts/new")
     public String showCreatePostPage(Model model) {
@@ -38,7 +44,13 @@ public class PostController {
 
     @PostMapping("/posts/save")
     public String savePost(@ModelAttribute("post") Post post, @RequestParam("tagsInput") String tags) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserDetails(authentication.getName());
+        post.setAuthor(user.getName());
+        user.getPosts().add(post);
+        post.setUser(user);
         postService.createNewPost(post, tags);
+        userService.save(user);
         return "redirect:/";
     }
 
@@ -69,7 +81,12 @@ public class PostController {
             posts = allPosts.getContent();
             totalPages = allPosts.getTotalPages();
         }
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            User user = userService.getUserDetails(username);
+            model.addAttribute("user", user);
+        }
         model.addAttribute("posts", posts);
         model.addAttribute("authors", postService.getAllAuthors());
         model.addAttribute("tags", tagrepository.findAll());
@@ -85,19 +102,37 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public String showPostPage(@PathVariable("id") Long id, Model model, @RequestParam(value = "sortOrder", required = false) String sortOrder, @RequestParam(value = "searchTerm", defaultValue = "") String searchTerm,
-                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "authorsList", required = false) List<String> authorsList, @RequestParam(value = "tagsList", required = false) List<Long> tagsList,@RequestParam(value="publishedDate",required=false) String publishedDate) {
+                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "authorsList", required = false) List<String> authorsList, @RequestParam(value = "tagsList", required = false) List<Long> tagsList, @RequestParam(value = "publishedDate", required = false) String publishedDate) {
         Post post = postService.getPostById(id);
         List<Comment> commentList = post.getComments();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user=null;
+        String email=null;
+        Comment commentForm = new Comment();
+        boolean isAuthenticated = authentication != null &&
+                !(authentication instanceof AnonymousAuthenticationToken);
+        if(isAuthenticated) {
+            System.out.println("hi");
+            user = userService.getUserDetails(authentication.getName());
+            email=authentication.getName();
+            commentForm.setName(user.getName());
+            commentForm.setEmail(user.getEmail());
+        }
 
+        boolean isOwner= post.getUser().getEmail().equals(email);
+
+        model.addAttribute("user",user);
+        model.addAttribute("isAuthenticated",isAuthenticated);
+        model.addAttribute("isOwner",isOwner);
         model.addAttribute("post", post);
         model.addAttribute("commentList", commentList);
-        model.addAttribute("commentForm", new Comment());
+        model.addAttribute("commentForm",commentForm);
         model.addAttribute("sortOrder", sortOrder != null ? sortOrder : "");
         model.addAttribute("searchTerm", searchTerm);
         model.addAttribute("page", page);
         model.addAttribute("authorsList", (authorsList != null && !authorsList.isEmpty()) ? authorsList : Collections.emptyList());
         model.addAttribute("tagsList", (tagsList != null && !tagsList.isEmpty()) ? tagsList : Collections.emptyList());
-        model.addAttribute("publishedDate",publishedDate);
+        model.addAttribute("publishedDate", publishedDate);
         return "post";
     }
 
