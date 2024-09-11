@@ -106,27 +106,25 @@ public class PostController {
         Post post = postService.getPostById(id);
         List<Comment> commentList = post.getComments();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user=null;
-        String email=null;
+        User user = null;
+        String email = null;
         Comment commentForm = new Comment();
         boolean isAuthenticated = authentication != null &&
                 !(authentication instanceof AnonymousAuthenticationToken);
-        if(isAuthenticated) {
-            System.out.println("hi");
+        if (isAuthenticated) {
             user = userService.getUserDetails(authentication.getName());
-            email=authentication.getName();
+            email = authentication.getName();
             commentForm.setName(user.getName());
             commentForm.setEmail(user.getEmail());
         }
+        boolean isOwner = post.getUser().getEmail().equals(email);
 
-        boolean isOwner= post.getUser().getEmail().equals(email);
-
-        model.addAttribute("user",user);
-        model.addAttribute("isAuthenticated",isAuthenticated);
-        model.addAttribute("isOwner",isOwner);
+        model.addAttribute("user", user);
+        model.addAttribute("isAuthenticated", isAuthenticated);
+        model.addAttribute("isOwner", isOwner);
         model.addAttribute("post", post);
         model.addAttribute("commentList", commentList);
-        model.addAttribute("commentForm",commentForm);
+        model.addAttribute("commentForm", commentForm);
         model.addAttribute("sortOrder", sortOrder != null ? sortOrder : "");
         model.addAttribute("searchTerm", searchTerm);
         model.addAttribute("page", page);

@@ -18,7 +18,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    background: #000;
+    background:black;
     color: #fff;
     padding-left: 5%;
     padding-right: 5%;
@@ -56,7 +56,7 @@
 }
 
 .filtering {
-    background: #000;
+    background: black;
     border-top: 2px solid white;
     padding: 25px;
     display: flex;
@@ -176,7 +176,7 @@
 .particular-post-bottom button {
     height: 40px;
     width: 120px;
-    background-color: black;
+    background-color: limegreen;
     color: white;
     border: none;
     border-radius: 5px;
@@ -277,10 +277,10 @@
 
 .dropdown-action button {
     height: 40px;
-    width: 180px; 
+    width: 180px;
     font-weight: bold;
     font-size: 16px;
-    background: #000;
+    background: black;
     border-radius: 10px;
     color: white;
     border: none;
@@ -363,4 +363,23 @@
 
 .username-display span:first-of-type {
     display: inline;
+}
+/* Style for the green box indicator */
+.current-user-indicator {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.current-user-box {
+    width: 15px;
+    height: 15px;
+    background-color: green;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.current-user-label {
+    font-size: 14px;
+    color: green;
 }

@@ -64,19 +64,24 @@
 
     <div class="add-comment-form">
         <form th:object="${commentForm}" method="post" th:action="@{/comment/{id}(id=${post.id})}">
-            <label for="name"  >Name:
-                <input type="text" id="name" th:field="*{name}"  required>
+            <label for="name" sec:authorize="isAnonymous()">Name:
+                <input type="text" id="name" th:field="*{name}" required>
+            </label>
+            <input type="hidden" th:field="*{name}" sec:authorize="isAuthenticated()" />
+
+            <label for="email" sec:authorize="isAnonymous()">Email:
+                <input type="email" id="email" th:field="*{email}" required>
+            </label>
+            <input type="hidden" th:field="*{email}" sec:authorize="isAuthenticated()" />
+
+            <label for="comment">Comment:
+                <textarea id="comment" th:field="*{comment}" required></textarea>
             </label>
 
-            <label for="email" >Email:
-                <input type="email" id="email" th:field="*{email}"    required>
-            </label>
-            <label for="comment">Comment:
-                <textarea id="comment"  th:field="*{comment}" required></textarea>
-            </label>
             <input type="submit" value="Submit">
         </form>
     </div>
+
 </div>
 <script>
     const seeCommentsButton = document.querySelector('.comment-buttons .comments button');

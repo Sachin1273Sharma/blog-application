@@ -29,15 +29,15 @@
                     <button type="submit" class="logout-button">Logout</button>
                 </form>
             </div>
-            <div sec:authorize="isAuthenticated()" class="username-display">
-                 <span th:text="${user.role=='ROLE_ADMIN'?'Admin '+user.email:user.email}"></span>
+            <div sec:authorize="isAuthenticated()" class="username-display" style="font-size:22px;font-weight:bold;">
+                 <span th:text="${user.role=='ROLE_ADMIN'?'Admin : '+user.email:user.email}"></span>
             </div>
         </div>
     </div>
     <div class="filtering">
         <div class="search-box">
             <form th:action="@{/}" method="get">
-                <input type="text" placeholder="Search by title, content, author, or tags" id="search" name="searchTerm"
+                <input type="text" placeholder="Search something" id="search" name="searchTerm"
                        th:value="${searchTerm}"/>
                 <button type="submit">Search</button>
             </form>
@@ -95,7 +95,7 @@
                 </form>
             </div>
             <div>
-                <form th:action="@{/}">
+                <form id="sortForm" th:action="@{/}">
                     <input type="hidden" name="searchTerm" th:value="${searchTerm}">
                     <input type="hidden" name="authorsList" th:each="author : ${authorsList}" th:value="${author}"/>
                     <input type="hidden" name="tagsList" th:each="tag : ${tagsList}" th:value="${tag}"/>
@@ -105,7 +105,7 @@
                         <option value="desc" th:selected="${sortOrder == 'desc'}">Newest First</option>
                         <option value="asc" th:selected="${sortOrder == 'asc'}">Oldest First</option>
                     </select>
-                    <button type="submit">Click</button>
+                   <!-- <button type="submit">Click</button>-->
                 </form>
             </div>
         </div>
@@ -117,6 +117,10 @@
         <div class="particular-post" th:if="${!posts.isEmpty()}" th:each="post : ${posts}">
             <div class="post-title" th:text="${post.title}">Title</div>
             <div class="created-by-text" th:text="'Created by :'+${post.author}">Author</div>
+            <div th:if="${user != null and post.user != null and post.user.email == user.email}" class="current-user-indicator">
+                <div class="current-user-box"></div>
+                <div class="current-user-label">My Post</div>
+            </div>
             <div style="font-size:20px;" th:text="${post.excerpt}">Excerpt</div>
             <div class="particular-post-bottom">
                 <div th:text="${post.formattedDate}">Published At</div>
@@ -145,6 +149,13 @@
     </div>
 </div>
 <script>
+    const sortSelect = document.getElementById('sort');
+    const sortForm = document.getElementById('sortForm');
+
+    sortSelect.addEventListener('change', function () {
+        sortForm.submit();
+    });
+
     const dropdownToggle = document.getElementById("dropdownToggle");
     const dropdownMenu = document.getElementById("dropdownMenu");
     const dropdownArrow = document.getElementById("dropdownArrow");

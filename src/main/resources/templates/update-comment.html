@@ -12,14 +12,8 @@
     </div>
     <form th:object="${commentForm}" method="post"
           th:action="@{/updateComment/{id}(id=${commentForm.id},postId=${postId})}">
-        <div class="normal-input">
-            <label for="name">Name:</label>
-            <input type="text" id="name" th:field="*{name}" required/>
-        </div>
-        <div class="normal-input">
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}" required/>
-        </div>
+        <input type="hidden" th:field="*{name}"/>
+        <input type="hidden" th:field="*{email}"/>
         <div class="normal-input">
             <label for="comment">Comment:</label>
             <textarea id="comment" th:field="*{comment}" required></textarea>

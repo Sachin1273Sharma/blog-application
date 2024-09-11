@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #fff;
+    background-color: white;
     color: #000;
     margin: 0;
     padding: 0;
@@ -15,6 +15,7 @@ body {
     margin: 0 auto;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border:1px solid black;
     border-radius: 5px;
     background-color: #fff;
 }
@@ -41,20 +42,16 @@ body {
 }
 .go-back button
 {
-    background:black;
+    background:dodgerblue;
 }
 .update-post button
 {
-    background:black;
+    background:limegreen;
 }
 .delete-post button
 {
-    background:black;
+    background:red;
 }
-.header button:hover {
-    background-color: #333;
-}
-
 .full-post {
     margin-top: 20px;
     overflow: auto;
@@ -88,7 +85,7 @@ body {
 }
 
 .post-tags .particular-tag {
-    background-color: #000;
+    background-color: #ff570c;
     color: #fff;
     padding: 5px 10px;
     border-radius: 3px;
@@ -118,15 +115,11 @@ body {
 }
 .comment-buttons .comments button
 {
-    background:black;
+    background:dodgerblue;
 }
 .comment-buttons .add-comments button
 {
-    background:black;
-}
-
-.comment-buttons button:hover, .add-comments button:hover {
-    background-color: #333;
+    background: limegreen;
 }
 
 .add-comment-form {
@@ -161,7 +154,7 @@ body {
 }
 
 .add-comment-form input[type="submit"] {
-    background-color: black;
+    background-color: limegreen;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -170,10 +163,6 @@ body {
     font-size: 14px;
     transition: background-color 0.3s;
     margin-top: 10px;
-}
-
-.add-comment-form input[type="submit"]:hover {
-    background-color: #333;
 }
 
 .show-comments {
@@ -226,7 +215,7 @@ body {
 }
 
 .delete-button {
-    background-color: black;
+    background-color: red;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -241,7 +230,7 @@ body {
 }
 
 .update-comment-button {
-    background-color: black;
+    background-color: limegreen;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -252,9 +241,6 @@ body {
     margin-left: 10px;
 }
 
-.update-comment-button:hover {
-    background-color: #333;
-}
 
 @media (max-width: 600px) {
     .show-comments {
@@ -290,7 +276,7 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: #000;
+    background-color: orangered;
     color: #fff;
     border: none;
     padding: 10px 20px;

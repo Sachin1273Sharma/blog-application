@@ -26,7 +26,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configure -> configure
                         .requestMatchers("/posts/new").authenticated()
-                        .requestMatchers("/","/posts/{id}","/css/**").permitAll()
+                        .requestMatchers("/","/posts/{id}","/css/**","/comment/{postId}").permitAll()
                         .requestMatchers("/register","/registerUser").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
