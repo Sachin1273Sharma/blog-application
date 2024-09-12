@@ -1,5 +1,5 @@
 
-FROM maven:3.8.5-openjdk-22 AS build
+FROM jelastic/maven:3.9.4-openjdk-22.ea-b17 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
