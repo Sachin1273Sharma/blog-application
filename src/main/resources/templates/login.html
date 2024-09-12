@@ -104,6 +104,9 @@
     <div th:if="${param.error}" class="error-message">
         <p>Invalid email or password.</p>
     </div>
+    <div th:if="${param.userExistsError}" class="error-message">
+        <p>User with this email already exists. Please login.</p>
+    </div>
 
     <form th:action="@{/authenticateTheUser}" method="post">
         <label for="email">Email</label>
