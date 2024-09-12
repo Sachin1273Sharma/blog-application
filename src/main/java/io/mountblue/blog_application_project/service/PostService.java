@@ -15,10 +15,13 @@ import java.util.Set;
 @Service
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private TagService tagService;
+    private final PostRepository postRepository;
+    private final TagService tagService;
+
+    public PostService(TagService tagService, PostRepository postRepository) {
+        this.tagService = tagService;
+        this.postRepository = postRepository;
+    }
 
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);

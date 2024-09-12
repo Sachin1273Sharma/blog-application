@@ -27,14 +27,18 @@ import java.util.Set;
 
 @Controller
 public class PostController {
-    @Autowired
-    private PostService postService;
-    @Autowired
-    private TagService tagService;
-    @Autowired
-    private TagRepository tagrepository;
-    @Autowired
-    private UserService userService;
+    private final PostService postService;
+    private final TagService tagService;
+    private final TagRepository tagrepository;
+    private final UserService userService;
+
+    public PostController(PostService postService, TagService tagService, TagRepository tagrepository, UserService userService) {
+        this.postService = postService;
+        this.tagService = tagService;
+        this.tagrepository = tagrepository;
+        this.userService = userService;
+    }
+
 
     @GetMapping("/posts/new")
     public String showCreatePostPage(Model model) {
@@ -136,7 +140,14 @@ public class PostController {
 
     @GetMapping("/update/{id}")
     public String showUpdatePage(@PathVariable("id") Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserDetails(authentication.getName());
         Post post = postService.getPostById(id);
+        if (user.getRole().equals("ROLE_AUTHOR")) {
+            if (!user.getPosts().contains(post)) {
+                return "access-denied";
+            }
+        }
         Set<Tag> tags = post.getTags();
         List<String> tagNames = new ArrayList<>();
         for (Tag tag : tags) {
@@ -156,6 +167,14 @@ public class PostController {
 
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable("id") Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserDetails(authentication.getName());
+        Post post = postService.getPostById(id);
+        if (user.getRole().equals("ROLE_AUTHOR")) {
+            if (!user.getPosts().contains(post)) {
+                return "access-denied";
+            }
+        }
         postService.deletePostById(id);
         tagService.cleanUpTags();
         return "redirect:/";

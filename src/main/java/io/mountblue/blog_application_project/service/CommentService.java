@@ -10,10 +10,13 @@ import java.time.LocalDateTime;
 
 @Service
 public class CommentService {
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private PostService postService;
+    private final CommentRepository commentRepository;
+    private final PostService postService;
+
+    public CommentService(CommentRepository commentRepository, PostService postService) {
+        this.commentRepository = commentRepository;
+        this.postService = postService;
+    }
 
     public Comment getCommentById(Long commentId) {
         return commentRepository.findById(commentId).orElse(null);

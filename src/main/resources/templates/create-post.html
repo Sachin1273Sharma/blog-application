@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="/css/create-post.css"/>
 </head>
 <body>
+<div class="logout-button-div">
+    <form th:action="@{/logout}" method="post" class="logout-form">
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
+</div>
 <div class="container">
     <div class="header">
         <h1>Create New Post</h1>

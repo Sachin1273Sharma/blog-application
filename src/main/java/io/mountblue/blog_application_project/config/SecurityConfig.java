@@ -26,15 +26,15 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configure -> configure
                         .requestMatchers("/posts/new").authenticated()
-                        .requestMatchers("/","/posts/{id}","/css/**","/comment/{postId}").permitAll()
-                        .requestMatchers("/register","/registerUser").permitAll()
+                        .requestMatchers("/", "/posts/{id}", "/css/**", "/comment/{postId}").permitAll()
+                        .requestMatchers("/register", "/registerUser").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/authenticateTheUser").
                         defaultSuccessUrl("/")
                         .permitAll())
-                .logout(logout->logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll());
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll());
         return http.build();
     }
 }

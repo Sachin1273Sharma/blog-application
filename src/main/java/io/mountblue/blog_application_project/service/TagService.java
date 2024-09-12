@@ -13,11 +13,13 @@ import java.util.Set;
 
 @Service
 public class TagService {
+    private final TagRepository tagRepository;
+    private final PostRepository postRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
-    @Autowired
-    private PostRepository postRepository;
+    public TagService(TagRepository tagRepository, PostRepository postRepository) {
+        this.tagRepository = tagRepository;
+        this.postRepository = postRepository;
+    }
 
     public void addTagsToPost(Long postId, String tags, Boolean updatable) {
         Post post = postRepository.findById(postId).orElse(null);

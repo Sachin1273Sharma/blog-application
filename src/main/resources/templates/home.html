@@ -121,7 +121,11 @@
                 <div class="current-user-box"></div>
                 <div class="current-user-label">My Post</div>
             </div>
-            <div style="font-size:20px;" th:text="${post.excerpt}">Excerpt</div>
+            <div th:if="${user != null and user.role == 'ROLE_ADMIN'}" class="admin-control">
+                <div class="admin-control-box"></div>
+                <div class="admin-control-label">Admin Privilege Granted</div>
+            </div>
+            <div style="font-size:16px;" th:text="${post.excerpt.length() > 140 ? #strings.substring(post.excerpt, 0, 140) + '...' : post.excerpt}">Excerpt</div>
             <div class="particular-post-bottom">
                 <div th:text="${post.formattedDate}">Published At</div>
                 <div>

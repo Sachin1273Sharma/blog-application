@@ -9,7 +9,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f5f5f5;
+    background-color: white;
 }
 
 .header {
@@ -18,7 +18,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    background:black;
+    background:limegreen;
     color: #fff;
     padding-left: 5%;
     padding-right: 5%;
@@ -56,8 +56,9 @@
 }
 
 .filtering {
-    background: black;
+    background: white;
     border-top: 2px solid white;
+    border-bottom:2px solid limegreen;
     padding: 25px;
     display: flex;
     flex-direction: row;
@@ -154,11 +155,16 @@
     color: #555;
 }
 
-.excerpt, .content {
+.excerpt {
     flex: 1;
-    margin-bottom: 10px;
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    word-wrap: break-word;
 }
-
 .particular-post-bottom {
     display: flex;
     justify-content: space-between;
@@ -305,7 +311,7 @@
     align-items: center;
     margin: 20px 0;
     margin-top: auto;
-    background:black;
+    background:limegreen;
     border:2px solid white;
     border-radius:10px;
     padding:20px;
@@ -364,7 +370,6 @@
 .username-display span:first-of-type {
     display: inline;
 }
-/* Style for the green box indicator */
 .current-user-indicator {
     display: flex;
     align-items: center;
@@ -382,4 +387,38 @@
 .current-user-label {
     font-size: 14px;
     color: green;
+}
+
+.current-user-indicator.admin {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-top:10px;
+    color: red;
+}
+
+.current-user-box.admin {
+    background-color: red;
+}
+.current-user-label
+{
+    font-size:16px;
+}
+.admin-control {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.admin-control-box {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.admin-control-label {
+    font-weight: bold;
+    color: red;
 }
