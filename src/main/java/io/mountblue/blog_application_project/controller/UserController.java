@@ -48,6 +48,6 @@ public class UserController {
         user.setRole("ROLE_AUTHOR");
         user.setPassword("{noop}" + user.getPassword());
         userService.createUser(user);
-        return "redirect:/";
+        return "redirect:/login";
     }
 }
