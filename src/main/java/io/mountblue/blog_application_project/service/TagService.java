@@ -4,8 +4,8 @@ import io.mountblue.blog_application_project.entity.Post;
 import io.mountblue.blog_application_project.entity.Tag;
 import io.mountblue.blog_application_project.repository.PostRepository;
 import io.mountblue.blog_application_project.repository.TagRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

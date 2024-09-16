@@ -3,7 +3,6 @@ package io.mountblue.blog_application_project.service;
 import io.mountblue.blog_application_project.entity.Comment;
 import io.mountblue.blog_application_project.entity.Post;
 import io.mountblue.blog_application_project.repository.CommentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

@@ -2,10 +2,10 @@ package io.mountblue.blog_application_project.service;
 
 import io.mountblue.blog_application_project.entity.Post;
 import io.mountblue.blog_application_project.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,8 +39,9 @@ public class PostService {
         return postRepository.findAllAuthors();
     }
 
+    @Transactional
     public void deletePostById(Long id) {
-        postRepository.deleteById(id);
+        postRepository.deleteByIdCustom(id);
     }
 
     public Page<Post> searchPosts(String searchTerm, Pageable pageable) {

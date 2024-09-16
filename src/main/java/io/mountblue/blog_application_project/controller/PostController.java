@@ -8,7 +8,6 @@ import io.mountblue.blog_application_project.repository.TagRepository;
 import io.mountblue.blog_application_project.service.PostService;
 import io.mountblue.blog_application_project.service.TagService;
 import io.mountblue.blog_application_project.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -170,13 +169,13 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserDetails(authentication.getName());
         Post post = postService.getPostById(id);
+
         if (user.getRole().equals("ROLE_AUTHOR")) {
             if (!user.getPosts().contains(post)) {
                 return "access-denied";
             }
         }
         postService.deletePostById(id);
-        tagService.cleanUpTags();
         return "redirect:/";
     }
 }

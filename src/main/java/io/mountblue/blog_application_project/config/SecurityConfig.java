@@ -14,11 +14,9 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
-        System.out.println("Inside userDetailsManager");
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT email, password, true AS enabled FROM users WHERE email = ?");
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT email, role FROM users WHERE email = ?");
-        System.out.println(jdbcUserDetailsManager);
         return jdbcUserDetailsManager;
     }
 
@@ -34,7 +32,12 @@ public class SecurityConfig {
                         .loginProcessingUrl("/authenticateTheUser").
                         defaultSuccessUrl("/")
                         .permitAll())
-                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll());
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll());
         return http.build();
     }
 }

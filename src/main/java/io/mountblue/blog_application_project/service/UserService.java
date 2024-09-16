@@ -3,6 +3,7 @@ package io.mountblue.blog_application_project.service;
 import io.mountblue.blog_application_project.entity.User;
 import io.mountblue.blog_application_project.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
